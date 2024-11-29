@@ -70,3 +70,112 @@ The server will start running on `http://localhost:3000`.
        "username": "testuser",
        "password": "testpassword"
      }
+b. Login:
+
+- Method: POST
+- URL: {BASE_URL}/auth/login
+- Body (raw JSON):
+
+```json
+{
+  "username": "testuser",
+  "password": "testpassword"
+}
+```
+
+
+- After successful login, set the `TOKEN` environment variable with the received token.
+
+
+c. Generate Static QR Code:
+
+- Method: POST
+- URL: {BASE_URL}/qr/generate-static
+- Headers: Authorization: Bearer {TOKEN}
+- Body (raw JSON):
+
+```json
+{
+  "url": "https://example.com",
+  "metadata": {
+    "campaign": "Summer Sale"
+  }
+}
+```
+
+
+
+
+d. Generate Dynamic QR Code:
+
+- Method: POST
+- URL: {BASE_URL}/qr/generate-dynamic
+- Headers: Authorization: Bearer {TOKEN}
+- Body (raw JSON):
+
+```json
+{
+  "url": "https://example.com/promo",
+  "metadata": {
+    "campaign": "Winter Promo"
+  }
+}
+```
+
+
+
+
+e. Update Dynamic QR Code:
+
+- Method: PUT
+- URL: {BASE_URL}/qr/:id/update
+- Headers: Authorization: Bearer {TOKEN}
+- Body (raw JSON):
+
+```json
+{
+  "newUrl": "https://example.com/updated-promo"
+}
+```
+
+
+
+
+f. Track QR Code Scan:
+
+- Method: POST
+- URL: {BASE_URL}/qr/:id/track
+- Body (raw JSON):
+
+```json
+{
+  "location": "New York",
+  "deviceType": "iPhone"
+}
+```
+
+
+
+
+g. Get QR Code Events:
+
+- Method: GET
+- URL: {BASE_URL}/qr/:id/events
+- Headers: Authorization: Bearer {TOKEN}
+
+
+h. Get QR Code Analytics:
+
+- Method: GET
+- URL: {BASE_URL}/qr/:id/analytics
+- Headers: Authorization: Bearer {TOKEN}
+
+
+i. Get User's QR Codes:
+
+- Method: GET
+- URL: {BASE_URL}/qr/my-codes
+- Headers: Authorization: Bearer {TOKEN}
+
+
+4. Test each endpoint by sending requests and verifying the responses.
