@@ -1,183 +1,217 @@
-# QR Code Management Platform
-
-This project is a backend system for a QR Code Management Platform that supports Dynamic QR Codes, Event Tracking, and Complete Analytics. It allows users to generate, update, and manage QR codes, track interactions, and analyze their performance.
-
-## Table of Contents
-
-1. [Features](#features)
-2. [Prerequisites](#prerequisites)
-3. [Project Structure](#project-structure)
-4. [Setup](#setup)
-5. [Running the Project](#running-the-project)
-6. [API Endpoints](#api-endpoints)
-7. [Testing with Postman](#testing-with-postman)
-
-## Features
-
-- User authentication and authorization
-- Generate static and dynamic QR codes
-- Update dynamic QR codes
-- Track QR code scans and interactions
-- Analyze QR code performance
-
-## Prerequisites
-
-- Node.js (v14 or later)
-- MongoDB
-- Postman (for testing API endpoints)
-- install dependencies npm install express dotenv mongoose qrcode jsonwebtoken bcrypt 
-
-## Project Structure
 
 
-The server will start running on `http://localhost:3000`.
+QR Code Management Platform
 
-## API Endpoints
+This backend system supports Dynamic QR Codes, Event Tracking, and Complete Analytics. It enables users to generate, update, and manage QR codes, track interactions, and analyze their performance.
+
+Table of Contents
+
+	1.	Features
+	2.	Prerequisites
+	3.	Project Structure
+	4.	Setup
+	5.	Running the Project
+	6.	API Endpoints
+	7.	Testing with Postman
+
+Features
+
+	•	User Authentication and Authorization (JWT-based).
+	•	Generate Static and Dynamic QR Codes.
+	•	Update Dynamic QR Codes.
+	•	Track QR Code scans and interactions.
+	•	Analyze QR Code performance with metrics such as:
+	•	Total scans
+	•	Unique users
+	•	Scans per day
+
+Prerequisites
+
+Make sure you have the following installed:
+	•	Node.js (v14 or later)
+	•	MongoDB (local or cloud database)
+	•	Postman (for API testing)
+
+Install required dependencies:
+
+npm install express dotenv mongoose qrcode jsonwebtoken bcrypt joi cors
+
+Project Structure
+
+HEALTHPRO
+├── node_modules/         # Installed dependencies
+├── src/
+│   ├── middleware/
+│   │   └── auth.js       # Authentication middleware
+│   ├── models/
+│   │   ├── Event.js      # Event model (tracks interactions)
+│   │   ├── QRCode.js     # QR Code model
+│   │   └── User.js       # User model
+│   ├── routes/
+│   │   ├── authRoutes.js # Authentication routes
+│   │   └── qrRoutes.js   # QR Code management routes
+│   └── app.js            # Main server file
+├── .env                  # Environment variables
+├── package.json          # Project metadata and dependencies
+└── README.md             # Documentation
+
+Setup
+
+	1.	Clone the repository and navigate to the project directory:
+
+git clone <repository-url>
+cd HEALTHPRO
 
 
-### Authentication
+	2.	Install the dependencies:
 
-- `POST /auth/register`: Register a new user
-- `POST /auth/login`: Login and receive a JWT token
-- `GET /auth/me`: Get current user details
+npm install
 
-### QR Code Management
 
-- `POST /qr/generate-static`: Generate a static QR code
-- `POST /qr/generate-dynamic`: Generate a dynamic QR code
-- `PUT /qr/:id/update`: Update a dynamic QR code
-- `POST /qr/:id/track`: Track a QR code scan event
-- `GET /qr/:id/events`: Get events for a specific QR code
-- `GET /qr/:id/analytics`: Get analytics for a specific QR code
-- `GET /qr/my-codes`: Get all QR codes for the current user
-- `GET /qr/:id/redirect`: Redirect endpoint for dynamic QR codes
+	3.	Configure environment variables:
+Create a .env file in the root directory and add the following:
 
-## Testing with Postman
+PORT=3000
+BASE_URL=http://localhost:3000
+MONGO_URI=<your-mongo-db-uri>
+JWT_SECRET=<your-jwt-secret>
 
-1. Open Postman and create a new collection for the QR Code Management Platform.
 
-2. Set up environment variables:
-   - `BASE_URL`: `http://localhost:3000`
-   - `TOKEN`: (leave empty for now)
+	4.	Start MongoDB (if using locally):
 
-3. Create requests for each endpoint:
+mongod
 
-   a. Register a user:
-   - Method: POST
-   - URL: {{BASE_URL}}/auth/register
-   - Body (raw JSON):
-     ```json
-     {
-        "email" : "testmail@gmail.com",
-       "username": "testuser",
-       "password": "testpassword"
-     }
-b. Login:
+Running the Project
 
-- Method: POST
-- URL: {BASE_URL}/auth/login
-- Body (raw JSON):
+To start the development server:
 
-```json
+npx nodemon src/app.js
+
+The server will run at http://localhost:3000.
+
+API Endpoints
+
+Authentication
+
+	•	POST /auth/register: Register a new user.
+	•	POST /auth/login: Log in and receive a JWT token.
+	•	GET /auth/me: Get current user details (requires authorization).
+
+QR Code Management
+
+	•	POST /qr/generate-static: Generate a static QR code.
+	•	POST /qr/generate-dynamic: Generate a dynamic QR code.
+	•	PUT /qr/:id/update: Update the URL of a dynamic QR code.
+	•	POST /qr/:id/track: Track an event (e.g., location, device type).
+	•	GET /qr/:id/events: Fetch all events for a specific QR code.
+	•	GET /qr/:id/analytics: Fetch analytics (e.g., scans, unique users).
+	•	GET /qr/my-codes: Fetch all QR codes created by the user.
+	•	GET /qr/:id/redirect: Redirect to the URL associated with the QR code.
+
+Testing with Postman
+
+	1.	Set Up Environment Variables in Postman:
+	•	BASE_URL: http://localhost:3000
+	•	TOKEN: (Leave empty initially)
+	2.	Test Endpoints:
+
+a. Register a User
+
+	•	Method: POST
+	•	URL: {{BASE_URL}}/auth/register
+	•	Body (JSON):
+
+{
+  "email": "testmail@gmail.com",
+  "username": "testuser",
+  "password": "testpassword"
+}
+
+b. Login
+
+	•	Method: POST
+	•	URL: {{BASE_URL}}/auth/login
+	•	Body (JSON):
+
 {
   "username": "testuser",
   "password": "testpassword"
 }
-```
 
 
-- After successful login, set the `TOKEN` environment variable with the received token.
+	•	After a successful response, save the returned TOKEN for authorization.
+
+c. Generate Static QR Code
+
+	•	Method: POST
+	•	URL: {{BASE_URL}}/qr/generate-static
+	•	Headers:
+
+{
+  "Authorization": "Bearer {{TOKEN}}"
+}
 
 
-c. Generate Static QR Code:
+	•	Body (JSON):
 
-- Method: POST
-- URL: {BASE_URL}/qr/generate-static
-- Headers: Authorization: Bearer {TOKEN}
-- Body (raw JSON):
-
-```json
 {
   "url": "https://example.com",
   "metadata": {
     "campaign": "Summer Sale"
   }
 }
-```
 
+d. Generate Dynamic QR Code
 
+	•	Method: POST
+	•	URL: {{BASE_URL}}/qr/generate-dynamic
+	•	Headers: Same as above
+	•	Body (JSON):
 
-
-d. Generate Dynamic QR Code:
-
-- Method: POST
-- URL: {BASE_URL}/qr/generate-dynamic
-- Headers: Authorization: Bearer {TOKEN}
-- Body (raw JSON):
-
-```json
 {
   "url": "https://example.com/promo",
   "metadata": {
     "campaign": "Winter Promo"
   }
 }
-```
 
+e. Update Dynamic QR Code
 
+	•	Method: PUT
+	•	URL: {{BASE_URL}}/qr/:id/update
+	•	Headers: Same as above
+	•	Body (JSON):
 
-
-e. Update Dynamic QR Code:
-
-- Method: PUT
-- URL: {BASE_URL}/qr/:id/update
-- Headers: Authorization: Bearer {TOKEN}
-- Body (raw JSON):
-
-```json
 {
   "newUrl": "https://example.com/updated-promo"
 }
-```
 
+f. Track QR Code Scan
 
+	•	Method: POST
+	•	URL: {{BASE_URL}}/qr/:id/track
+	•	Body (JSON):
 
-
-f. Track QR Code Scan:
-
-- Method: POST
-- URL: {BASE_URL}/qr/:id/track
-- Body (raw JSON):
-
-```json
 {
   "location": "New York",
   "deviceType": "iPhone"
 }
-```
 
+g. Fetch QR Code Events
 
+	•	Method: GET
+	•	URL: {{BASE_URL}}/qr/:id/events
+	•	Headers: Same as above
 
+h. Fetch QR Code Analytics
 
-g. Get QR Code Events:
+	•	Method: GET
+	•	URL: {{BASE_URL}}/qr/:id/analytics
+	•	Headers: Same as above
 
-- Method: GET
-- URL: {BASE_URL}/qr/:id/events
-- Headers: Authorization: Bearer {TOKEN}
+i. Fetch User’s QR Codes
 
+	•	Method: GET
+	•	URL: {{BASE_URL}}/qr/my-codes
+	•	Headers: Same as above
 
-h. Get QR Code Analytics:
-
-- Method: GET
-- URL: {BASE_URL}/qr/:id/analytics
-- Headers: Authorization: Bearer {TOKEN}
-
-
-i. Get User's QR Codes:
-
-- Method: GET
-- URL: {BASE_URL}/qr/my-codes
-- Headers: Authorization: Bearer {TOKEN}
-
-
-4. Test each endpoint by sending requests and verifying the responses.
