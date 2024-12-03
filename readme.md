@@ -25,6 +25,7 @@ This project is a backend system for a QR Code Management Platform that supports
 - Node.js (v14 or later)
 - MongoDB
 - Postman (for testing API endpoints)
+- install dependencies npm install express dotenv mongoose qrcode jsonwebtoken bcrypt 
 
 ## Project Structure
 
