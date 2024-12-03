@@ -68,6 +68,7 @@ The server will start running on `http://localhost:3000`.
    - Body (raw JSON):
      ```json
      {
+        "email" : "testmail@gmail.com",
        "username": "testuser",
        "password": "testpassword"
      }
